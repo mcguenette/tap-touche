@@ -14,7 +14,7 @@
         type="image/x-icon">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Orbitron:wght@900&family=Poppins:wght@400;800&family=Potta+One&family=Righteous&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Londrina+Solid:wght@400;900&family=Orbitron:wght@900&family=Poppins:wght@400;800&display=swap" rel="stylesheet">
     <script src="./assets/script/index.js" type="module"></script>
     <link rel="stylesheet" href="./assets/style/style.css">
     <script src="https://kit.fontawesome.com/20608a4ccb.js"
@@ -23,15 +23,7 @@
 </head>
 <header>
     <div class="game-header">
-        <div class="left">
             <img src="./assets/img/tap-touche-favicon.png" alt="logo"><h1>Tap Touche</h1>
-        </div>
-        <div class="right">
-            <button type="button" id="restart-btn"
-                class="secondary-button"><i
-                    class="fa-solid fa-rotate-left"></i>
-                Restart</button>
-        </div>
     </div>
 </header>
 <body>
@@ -66,10 +58,12 @@
             <section>
                 <div class="guess-section">
                 <div class="guess-card">
-                    <div id="timer"></div>
-                    <div id="word-output"></div>
-                    <input type="text" name="write" id="tap-touche">
                     <div id="guessed"></div>
+                    <div id="timer"></div>
+                    <span id="word-output"></span>
+                    <input type="text" name="write" id="tap-touche">
+                    <button type="button" id="play-again" class="primary-button">
+                        <i class="fa-solid fa-rotate-left"></i>Play Again</button>
                 </div>
                 </div>
             </section>

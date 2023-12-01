@@ -11,6 +11,7 @@ const startBtn = select('#start-btn');
 const countdownStart = select('#countdown-start');
 const guessContainer = select('.guess-card');
 const timer = select('#timer');
+const playAgain = select('#play-again');
 
 // Game variables
 const words = [
@@ -89,18 +90,21 @@ const startModalCountdown = function () {
 // Timer 
 const updateTimer = function () {
     remainingSeconds--;
-
+    // tried to use guard clause here but did not work as expected.
     if (remainingSeconds >= 0) {
         timer.textContent = remainingSeconds;
-
+    if (remainingSeconds <= 10) {
+        timer.style.backgroundColor = '#db2806';
+    }
     } else {
         clearInterval(timerInterval);
+        showPlayAgain();
         endGame();
     }
 };
 
 const startGameTimer = function () {
-    remainingSeconds = 99;
+    remainingSeconds = 20;
     timer.textContent = remainingSeconds;
 
     timerInterval = setInterval(updateTimer, 1000);
@@ -118,12 +122,29 @@ const startGame = function () {
 
 const displayCurrentWord = function () {
     const wordOutput = select('#word-output');
-    wordOutput.textContent = words[currentWordIndex];
+    const shuffledWords = shuffleArray(words);
+
+    wordOutput.textContent = shuffledWords[currentWordIndex];
 };
+
+const shuffleArray = function (array) {
+    let currentIndex = array.length, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+};
+
+const showPlayAgain = function () {
+    playAgain.style.visibility = 'visible';
+}
 
 const displayInput = function() {
     guessContainer.style.display = 'flex';
-    guessContainer.style.backgroundColor = '#f05033';
+    guessContainer.style.backgroundColor = 'rgb(240 80 51 / 80%)';
 }
 
 const checkUserInput = function () {

@@ -4,11 +4,11 @@
 :root {
     --primary-dark: #202124;
     --secondary-dark-color: #ffffff0d;
-    --light-color: #fafafa;
+    --light-color: #f3f9ff;
     --primary-blue: #09f;
     --secondary-blue: rgb(0, 119, 198);
-    --primary-green: #9f0;
-    --secondary-green: rgb(130, 216, 0);
+    --primary-green: rgb(170 204 55);
+    --secondary-green: #3eb667;
     --primary-red: #f05033;
     --secondary-red: #db2806;
     --primary-orange: #f90;
@@ -24,6 +24,10 @@ body {
     overflow: hidden;
 }
 
+header {
+    height: 0px;
+}
+
 main {
     min-height: 100dvh;
 }
@@ -33,17 +37,22 @@ main {
     margin-inline: auto;
 }
 
+h1 {
+    color: var(--primary-orange);
+    font-size: 42px;
+}
+
 h1, h2 {
-    font-family: 'Potta One', sans-serif;
+    font-family: 'Londrina Solid', sans-serif;
 }
 
 .game-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     margin-top: 40px;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .game-header img {
@@ -51,13 +60,7 @@ h1, h2 {
     width: 75px;
 }
 
-.left, .right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-input, button.secondary-button {
+input, button {
     padding: 7px 15px;
     border-radius: 4px;
     height: 42px;
@@ -70,22 +73,25 @@ input, button.secondary-button {
 }
 
 .primary-button {
-    background-color: var(--primary-orange);
+    background-color: var(--primary-green);
     color: var(--light-color);
-    width: 100px;
+    width: auto;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 6px;
 }
 
 .primary-button:hover {
-    background-color: var(--secondary-orange);
+    background-color: var(--secondary-green);
 }
 
 .secondary-button {
-    background-color: var(--primary-red);
+    background-color: var(--primary-orange);
     color: var(--light-color);
 }
 
 .secondary-button:hover {
-    background-color: var(--secondary-red);
+    background-color: var(--secondary-orange);
 }
 
 /* Modal */
@@ -113,7 +119,7 @@ input, button.secondary-button {
     width: 600px;
     height: 300px;
     padding: 20px;
-    background-color: white;
+    background-color: rgb(255 255 255 / 65%);
     border-radius: 6px;
     z-index: 2;
 }
@@ -154,7 +160,7 @@ input, button.secondary-button {
     justify-content: center;
 }
 .modal .modal-header {
-    font-size: 22px;
+    font-size: 34px;
     color: var(--primary-red);
 }
 
@@ -162,7 +168,8 @@ input, button.secondary-button {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 22px;
+    padding: 5px 22px 15px;
+    justify-content: center;
 }
 
 .modal-front .modal-content{
@@ -239,13 +246,15 @@ span#countdown-start {
 
 .guess-card {
     display: none;
-    padding: 40px;
     text-align: center;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     border-radius: 6px;
+    width: 600px;
+    gap: 15px;
+    padding: 20px;
     font-family: 'Orbitron', sans-serif;
-    font-family: 'Righteous', sans-serif;
 }
 
 #timer {
@@ -259,11 +268,25 @@ span#countdown-start {
 }
 
 #word-output, #tap-touche {
-    font-family: 'Bungee', sans-serif;
+    font-family: 'Londrina Solid', sans-serif;
+    text-transform: uppercase;
+    color: var(--light-color);
+}
+
+#word-output {
+    font-size: 64px;
+    line-height: 60px;
 }
 
 input#tap-touche {
-    height: 60px;
-    width: 350px;
+    height: 42px;
+    width: 300px;
     text-align: center;
+    margin-inline: auto;
+    background-color: rgb(255 255 255 / 75%);
+    color: var(--primary-orange);
+}
+
+button#play-again {
+    visibility: hidden;
 }
