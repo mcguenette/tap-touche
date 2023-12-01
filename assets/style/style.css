@@ -8,8 +8,10 @@
     --primary-blue: #09f;
     --secondary-blue: rgb(0, 119, 198);
     --primary-green: #9f0;
+    --secondary-green: rgb(130, 216, 0);
     --primary-red: rgb(255, 0, 93);
     --primary-orange: #f90;
+    --secondary-orange: rgb(212, 127, 0);
     --primary-purple: #90f;
 }
 
@@ -28,5 +30,148 @@ main {
     min-height: 100dvh;
 }
 
-section {
+input, button.secondary-button {
+    padding: 7px 15px;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    height: 42px;
+    width: auto;
+    transition: all 0.5s ease;
+}
+
+.fa-solid, .fas {
+    font-size: 14px;
+}
+
+.primary-button {
+    background-color: var(--primary-green);
+    color: var(--primary-dark);
+
+}
+
+.primary-button:hover {
+    background-color: var(--secondary-green);
+}
+
+.secondary-button {
+    background-color: var(--primary-orange);
+    color: var(--light-color);
+}
+
+.secondary-button:hover {
+    background-color: var(--secondary-orange);
+}
+
+/* Modal */
+.modal-wrapper {
+    position: relative;
+    margin-inline: auto;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+        rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    width: 500px;
+    height: 252px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 6px;
+    z-index: 2;
+}
+
+
+/* Flip animation styles */
+.modal-container {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+}
+
+.modal.hidden .modal-container {
+    transform: rotateY(180deg);
+}
+
+.modal-front,
+.modal-back {
+    /* position: absolute; */
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.modal-back {
+    display: flex;
+    flex-direction: column;
+}
+
+/* .modal-back {
+    transform: rotateY(180deg);
+} */
+
+/* Header and content styles */
+.modal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.modal-content p {
+    text-align: center;
+}
+
+span#countdown-start {
+    font-size: 62px;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Add any additional styles for the modal footer or other elements */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-close {
+    padding: 5px 10px;
+    background: #eee;
+    border-radius: 50%;
+    cursor: pointer;
 }
