@@ -9,7 +9,8 @@
     --secondary-blue: rgb(0, 119, 198);
     --primary-green: #9f0;
     --secondary-green: rgb(130, 216, 0);
-    --primary-red: rgb(255, 0, 93);
+    --primary-red: #f05033;
+    --secondary-red: #db2806;
     --primary-orange: #f90;
     --secondary-orange: rgb(212, 127, 0);
     --primary-purple: #90f;
@@ -18,14 +19,31 @@
 body {
     min-height: 100%;
     font-family: 'Poppins', sans-serif;
+    background-image: url(../img/nouveautes-2018-2x.png);
+    background-repeat: round;
+    overflow: hidden;
+}
+
+main {
+    min-height: 100dvh;
+}
+
+.container {
+    width: min(100% - 30px, 1080px);
+    margin-inline: auto;
+}
+
+h1, h2 {
+    font-family: 'Potta One', sans-serif;
 }
 
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     margin-top: 40px;
+    flex-direction: column;
 }
 
 .game-header img {
@@ -37,12 +55,6 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-}
-
-.container {
-    width: min(100% - 30px, 1080px);
-    margin-inline: auto;
-    min-height: 100dvh;
 }
 
 input, button.secondary-button {
@@ -58,22 +70,22 @@ input, button.secondary-button {
 }
 
 .primary-button {
-    background-color: var(--primary-green);
-    color: var(--primary-dark);
-
+    background-color: var(--primary-orange);
+    color: var(--light-color);
+    width: 100px;
 }
 
 .primary-button:hover {
-    background-color: var(--secondary-green);
+    background-color: var(--secondary-orange);
 }
 
 .secondary-button {
-    background-color: var(--primary-orange);
+    background-color: var(--primary-red);
     color: var(--light-color);
 }
 
 .secondary-button:hover {
-    background-color: var(--secondary-orange);
+    background-color: var(--secondary-red);
 }
 
 /* Modal */
@@ -98,8 +110,8 @@ input, button.secondary-button {
     flex-direction: column;
     justify-content: flex-start;
     gap: 0.4rem;
-    width: 500px;
-    height: 252px;
+    width: 600px;
+    height: 300px;
     padding: 20px;
     background-color: white;
     border-radius: 6px;
@@ -136,28 +148,53 @@ input, button.secondary-button {
 } */
 
 /* Header and content styles */
-.modal .modal-header {
+.modal .modal-header, .modal-button {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+}
+.modal .modal-header {
+    font-size: 22px;
+    color: var(--primary-red);
 }
 
 .modal-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    gap: 10px;
+    padding: 22px;
+}
+
+.modal-front .modal-content{
+    align-items: flex-start;
 }
 
 .modal-content p {
     text-align: center;
 }
 
+
+.modal-content span {
+    color: var(--primary-orange);
+    font-weight: 600;
+}
+
+.modal-content li {
+    font-size: 14px;
+}
+
+.modal-front .modal-content h3, .modal-content li {
+    text-align: left;
+}
+
+.modal-back .modal-content h3 {
+    text-align: center;
+}
+
+
 span#countdown-start {
-    font-size: 62px;
-    color: var(--primary-dark);
+    font-size: 82px;
+    color: var(--primary-orange);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,9 +228,42 @@ span#countdown-start {
 
 /* Input/Guess */
 
-.guess-wrapper {
+.guess-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 42px;
+    height: 100dvh;
+}
+
+.guess-card {
+    display: none;
+    padding: 40px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 6px;
+    font-family: 'Orbitron', sans-serif;
+    font-family: 'Righteous', sans-serif;
+}
+
+#timer {
+    font-family: 'Orbitron', sans-serif;
+    background-color: var(--primary-orange);
+    border-radius: 50%;
+    padding: 15px;
+    color: var(--light-color);
+    width: 100px;
+    margin-inline: auto;
+}
+
+#word-output, #tap-touche {
+    font-family: 'Bungee', sans-serif;
+}
+
+input#tap-touche {
+    height: 60px;
+    width: 350px;
+    text-align: center;
 }
