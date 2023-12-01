@@ -104,7 +104,7 @@ const updateTimer = function () {
 };
 
 const startGameTimer = function () {
-    remainingSeconds = 20;
+    remainingSeconds = 99;
     timer.textContent = remainingSeconds;
 
     timerInterval = setInterval(updateTimer, 1000);
