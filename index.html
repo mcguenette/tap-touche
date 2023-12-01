@@ -10,7 +10,7 @@
     <meta name="keywords"
         content="web developer, web, front-end, css, javascript, html, react">
     <link rel="shortcut icon"
-        href="https://res.cloudinary.com/dzdgpwtox/image/upload/v1656263678/designer-tool-uploads/bucket_9200/1656263676160.png"
+        href="./assets/img/tap-touche-favicon.png"
         type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,18 +53,21 @@
                 <div class="overlay hidden"></div>
             </section>
             <section>
-                <div>
-                    <h1>Tap Touche</h1>
+                <div class="game-header">
+                    <div class="left">
+                        <img src="./assets/img/tap-touche-favicon.png" alt="logo"><h1>Tap Touche</h1>
+                    </div>
+                    <div class="right">
+                        <button type="button" id="restart-btn"
+                            class="secondary-button"><i
+                                class="fa-solid fa-rotate-left"></i>
+                            Restart</button>
+                    </div>
                 </div>
-                <div>
-                    <button type="button" id="restart-btn"
-                        class="secondary-button"><i
-                            class="fa-solid fa-rotate-left"></i>
-                        Restart</button>
-                </div>
+
             </section>
             <section>
-                <div>
+                <div class="guess-wrapper">
                     <div id="timer"></div>
                     <div id="guessed"></div>
                     <div id="word-output"></div>

@@ -20,8 +20,23 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-main {
-  
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.game-header img {
+    border-radius: 50%;
+    width: 75px;
+}
+
+.left, .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .container {
@@ -33,8 +48,6 @@ main {
 input, button.secondary-button {
     padding: 7px 15px;
     border-radius: 4px;
-    margin-right: 10px;
-    margin-bottom: 10px;
     height: 42px;
     width: auto;
     transition: all 0.5s ease;
@@ -174,4 +187,13 @@ span#countdown-start {
     background: #eee;
     border-radius: 50%;
     cursor: pointer;
+}
+
+/* Input/Guess */
+
+.guess-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
