@@ -1,0 +1,32 @@
+@charset "utf-8";
+@import url(./reset.css);
+
+:root {
+    --primary-dark: #202124;
+    --secondary-dark-color: #ffffff0d;
+    --light-color: #fafafa;
+    --primary-blue: #09f;
+    --secondary-blue: rgb(0, 119, 198);
+    --primary-green: #9f0;
+    --primary-red: rgb(255, 0, 93);
+    --primary-orange: #f90;
+    --primary-purple: #90f;
+}
+
+body {
+    min-height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+main {
+  
+}
+
+.container {
+    width: min(100% - 30px, 1080px);
+    margin-inline: auto;
+    min-height: 100dvh;
+}
+
+section {
+}
