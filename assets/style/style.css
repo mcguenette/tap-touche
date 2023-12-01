@@ -4,12 +4,13 @@
 :root {
     --primary-dark: #202124;
     --secondary-dark-color: #ffffff0d;
-    --light-color: #fafafa;
+    --light-color: #f3f9ff;
     --primary-blue: #09f;
     --secondary-blue: rgb(0, 119, 198);
-    --primary-green: #9f0;
-    --secondary-green: rgb(130, 216, 0);
-    --primary-red: rgb(255, 0, 93);
+    --primary-green: rgb(170 204 55);
+    --secondary-green: #3eb667;
+    --primary-red: #f05033;
+    --secondary-red: #db2806;
     --primary-orange: #f90;
     --secondary-orange: rgb(212, 127, 0);
     --primary-purple: #90f;
@@ -18,23 +19,50 @@
 body {
     min-height: 100%;
     font-family: 'Poppins', sans-serif;
+    background-image: url(../img/nouveautes-2018-2x.png);
+    background-repeat: round;
+    overflow: hidden;
+}
+
+header {
+    height: 0px;
 }
 
 main {
-  
+    min-height: 100dvh;
 }
 
 .container {
     width: min(100% - 30px, 1080px);
     margin-inline: auto;
-    min-height: 100dvh;
 }
 
-input, button.secondary-button {
+h1 {
+    color: var(--primary-orange);
+    font-size: 42px;
+}
+
+h1, h2 {
+    font-family: 'Londrina Solid', sans-serif;
+}
+
+.game-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    flex-direction: row;
+}
+
+.game-header img {
+    border-radius: 50%;
+    width: 75px;
+}
+
+input, button {
     padding: 7px 15px;
     border-radius: 4px;
-    margin-right: 10px;
-    margin-bottom: 10px;
     height: 42px;
     width: auto;
     transition: all 0.5s ease;
@@ -46,8 +74,11 @@ input, button.secondary-button {
 
 .primary-button {
     background-color: var(--primary-green);
-    color: var(--primary-dark);
-
+    color: var(--light-color);
+    width: auto;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 6px;
 }
 
 .primary-button:hover {
@@ -85,10 +116,10 @@ input, button.secondary-button {
     flex-direction: column;
     justify-content: flex-start;
     gap: 0.4rem;
-    width: 500px;
-    height: 252px;
+    width: 600px;
+    height: 300px;
     padding: 20px;
-    background-color: white;
+    background-color: rgb(255 255 255 / 65%);
     border-radius: 6px;
     z-index: 2;
 }
@@ -123,28 +154,54 @@ input, button.secondary-button {
 } */
 
 /* Header and content styles */
-.modal .modal-header {
+.modal .modal-header, .modal-button {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+}
+.modal .modal-header {
+    font-size: 34px;
+    color: var(--primary-red);
 }
 
 .modal-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    gap: 10px;
+    padding: 5px 22px 15px;
+    justify-content: center;
+}
+
+.modal-front .modal-content{
+    align-items: flex-start;
 }
 
 .modal-content p {
     text-align: center;
 }
 
+
+.modal-content span {
+    color: var(--primary-orange);
+    font-weight: 600;
+}
+
+.modal-content li {
+    font-size: 14px;
+}
+
+.modal-front .modal-content h3, .modal-content li {
+    text-align: left;
+}
+
+.modal-back .modal-content h3 {
+    text-align: center;
+}
+
+
 span#countdown-start {
-    font-size: 62px;
-    color: var(--primary-dark);
+    font-size: 82px;
+    color: var(--primary-orange);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -174,4 +231,62 @@ span#countdown-start {
     background: #eee;
     border-radius: 50%;
     cursor: pointer;
+}
+
+/* Input/Guess */
+
+.guess-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    height: 100dvh;
+}
+
+.guess-card {
+    display: none;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    width: 600px;
+    gap: 15px;
+    padding: 20px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#timer {
+    font-family: 'Orbitron', sans-serif;
+    background-color: var(--primary-orange);
+    border-radius: 50%;
+    padding: 15px;
+    color: var(--light-color);
+    width: 100px;
+    margin-inline: auto;
+}
+
+#word-output, #tap-touche {
+    font-family: 'Londrina Solid', sans-serif;
+    text-transform: uppercase;
+    color: var(--light-color);
+}
+
+#word-output {
+    font-size: 64px;
+    line-height: 60px;
+}
+
+input#tap-touche {
+    height: 42px;
+    width: 300px;
+    text-align: center;
+    margin-inline: auto;
+    background-color: rgb(255 255 255 / 75%);
+    color: var(--primary-orange);
+}
+
+button#play-again {
+    visibility: hidden;
 }

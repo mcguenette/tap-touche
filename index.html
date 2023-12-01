@@ -10,69 +10,61 @@
     <meta name="keywords"
         content="web developer, web, front-end, css, javascript, html, react">
     <link rel="shortcut icon"
-        href="https://res.cloudinary.com/dzdgpwtox/image/upload/v1656263678/designer-tool-uploads/bucket_9200/1656263676160.png"
+        href="./assets/img/tap-touche-favicon.png"
         type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Exo:wght@500;600&family=Poppins:wght@400;800&display=swap"
-        rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Londrina+Solid:wght@400;900&family=Orbitron:wght@900&family=Poppins:wght@400;800&display=swap" rel="stylesheet">
     <script src="./assets/script/index.js" type="module"></script>
     <link rel="stylesheet" href="./assets/style/style.css">
     <script src="https://kit.fontawesome.com/20608a4ccb.js"
         crossorigin="anonymous"></script>
     <title></title>
 </head>
-
+<header>
+    <div class="game-header">
+            <img src="./assets/img/tap-touche-favicon.png" alt="logo"><h1>Tap Touche</h1>
+    </div>
+</header>
 <body>
     <main>
         <div class="container">
-            <section>
                     <div class="modal">
                         <div class="modal-front">
                             <div class="modal-header">
                                 <h2>Welcome to Tap Touche</h2>
-                                <button class="modal-close">⨉</button>
                             </div>
                             <div class="modal-content">
-                                <p>Click <span>Start</span> when you're ready to begin!</p>
+                                <h3>Rules of the game</h3>
+                                <li><strong>1.</strong> You will have <span>99 seconds</span> to type as many words as you possibly can.</li>
+                                <li><strong>2.</strong> When you complete a word you will automatically move onto the next!</li>
+                                <li><strong>3.</strong> Click the start button once you're ready to begin</li>
+                            </div>
+                            <div class="modal-button">
                                 <input type="button" value="Start" id="start-btn" class="primary-button">
                             </div>
                         </div>
                         <div class="modal-back hidden">
                             <div class="modal-header">
                                 <h2>Get ready!</h2>
-                                <button class="modal-close">⨉</button>
                             </div>
                             <div class="modal-content">
-                                <p>Starting in <span id="countdown-start">3</span></p>
+                                <h3>Starting in <span id="countdown-start">3</span></h3>
                                 <p id="countdown-message"></p>
                             </div>
                         </div>
                     </div>
                 <div class="overlay hidden"></div>
-            </section>
             <section>
-                <div>
-                    <h1>Tap Touche</h1>
-                </div>
-                <div>
-                    <button type="button" id="restart-btn"
-                        class="secondary-button"><i
-                            class="fa-solid fa-rotate-left"></i>
-                        Restart</button>
-                </div>
-            </section>
-            <section>
-                <div>
-                    <div id="timer"></div>
+                <div class="guess-section">
+                <div class="guess-card">
                     <div id="guessed"></div>
-                    <div id="word-output"></div>
-                </div>
-                <div>
+                    <div id="timer"></div>
+                    <span id="word-output"></span>
                     <input type="text" name="write" id="tap-touche">
+                    <button type="button" id="play-again" class="primary-button">
+                        <i class="fa-solid fa-rotate-left"></i>Play Again</button>
                 </div>
-                <div>
                 </div>
             </section>
         </div>
