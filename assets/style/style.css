@@ -68,7 +68,8 @@ input, button {
     transition: all 0.5s ease;
 }
 
-.fa-solid, .fas {
+i.fa-solid.fa-rotate-left {
+    margin-right: 5px;
     font-size: 14px;
 }
 
@@ -245,6 +246,7 @@ span#countdown-start {
 }
 
 .guess-card {
+    position: relative;
     display: none;
     text-align: center;
     flex-direction: column;
@@ -276,6 +278,14 @@ span#countdown-start {
 #word-output {
     font-size: 64px;
     line-height: 60px;
+}
+
+div#word-count {
+    color: var(--light-color);
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 16px;
 }
 
 input#tap-touche {

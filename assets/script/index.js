@@ -114,6 +114,7 @@ const startGameTimer = function () {
 const startGame = function () {
     currentWordIndex = 0;
     correctWordCount = 0;
+    playAgain.style.visibility = 'hidden';
 
     displayCurrentWord();
     displayInput();
@@ -142,6 +143,7 @@ const showPlayAgain = function () {
     playAgain.style.visibility = 'visible';
 }
 
+
 const displayInput = function() {
     guessContainer.style.display = 'flex';
     guessContainer.style.backgroundColor = 'rgb(240 80 51 / 80%)';
@@ -162,6 +164,7 @@ const checkUserInput = function () {
         }
 
         select('#tap-touche').value = '';
+        select('#word-count span').textContent = correctWordCount;
     }
 };
 
@@ -180,6 +183,7 @@ onEvent('keydown', document, function (e) {
 
 onEvent('click', overlay, closeDefaultModal);
 onEvent('click', startBtn, switchModal);
+onEvent('click', playAgain, startGame);
 onEvent('input', select('#tap-touche'), checkUserInput);
 
 // Load modal right away
