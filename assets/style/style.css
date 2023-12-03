@@ -5,7 +5,7 @@
     --primary-dark: #202124;
     --secondary-dark-color: #ffffff0d;
     --light-color: #f3f9ff;
-    --primary-blue: #09f;
+    --primary-blue: #c4dfff;
     --secondary-blue: rgb(0, 119, 198);
     --primary-green: rgb(170 204 55);
     --secondary-green: #3eb667;
@@ -66,32 +66,33 @@ input, button {
     height: 42px;
     width: auto;
     transition: all 0.5s ease;
-}
-
-.fa-solid, .fas {
-    font-size: 14px;
-}
-
-.primary-button {
-    background-color: var(--primary-green);
-    color: var(--light-color);
     width: auto;
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
     border-radius: 6px;
 }
 
+i.fa-solid.fa-rotate-left {
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.primary-button {
+    background-color: var(--primary-red);
+    color: var(--light-color);
+}
+
 .primary-button:hover {
-    background-color: var(--secondary-green);
+    background-color: var(--secondary-red);
 }
 
 .secondary-button {
-    background-color: var(--primary-orange);
+    background-color: var(--primary-green);
     color: var(--light-color);
 }
 
 .secondary-button:hover {
-    background-color: var(--secondary-orange);
+    background-color: var(--secondary-green);
 }
 
 /* Modal */
@@ -119,7 +120,7 @@ input, button {
     width: 600px;
     height: 300px;
     padding: 20px;
-    background-color: rgb(255 255 255 / 65%);
+    background-color: rgb(62 182 103 / 60%);
     border-radius: 6px;
     z-index: 2;
 }
@@ -161,7 +162,7 @@ input, button {
 }
 .modal .modal-header {
     font-size: 34px;
-    color: var(--primary-red);
+    color: var(--primary-orange);
 }
 
 .modal-content {
@@ -170,6 +171,7 @@ input, button {
     gap: 10px;
     padding: 5px 22px 15px;
     justify-content: center;
+    color: var(--light-color);
 }
 
 .modal-front .modal-content{
@@ -200,8 +202,10 @@ input, button {
 
 
 span#countdown-start {
-    font-size: 82px;
-    color: var(--primary-orange);
+    font-size: 42px;
+    color: var(--light-color);
+    background-color: var(--primary-red);
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -244,7 +248,8 @@ span#countdown-start {
     height: 100dvh;
 }
 
-.guess-card {
+.guess-card, .score-card {
+    position: relative;
     display: none;
     text-align: center;
     flex-direction: column;
@@ -257,7 +262,27 @@ span#countdown-start {
     font-family: 'Orbitron', sans-serif;
 }
 
-#timer {
+.score-card {
+    background-color: #e78b00ab;
+    margin-top: 20px;
+    width: 250px;
+    color: var(--light-color);
+    gap: 0px;
+    position: absolute;
+    bottom: 10px;
+}
+
+.score-card h3 {
+    color: var(--secondary-red);
+    font-size: 24px;
+}
+
+#game-score, #game-date {
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#timer, #countdown-start {
     font-family: 'Orbitron', sans-serif;
     background-color: var(--primary-orange);
     border-radius: 50%;
@@ -276,6 +301,14 @@ span#countdown-start {
 #word-output {
     font-size: 64px;
     line-height: 60px;
+}
+
+div#word-count {
+    color: var(--light-color);
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 16px;
 }
 
 input#tap-touche {
