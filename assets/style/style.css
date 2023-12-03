@@ -202,8 +202,10 @@ i.fa-solid.fa-rotate-left {
 
 
 span#countdown-start {
-    font-size: 82px;
-    color: var(--primary-red);
+    font-size: 42px;
+    color: var(--light-color);
+    background-color: var(--primary-red);
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;

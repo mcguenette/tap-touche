@@ -113,7 +113,7 @@ function updateTimer() {
 }
 
 function startGameTimer() {
-  remainingSeconds = 10; // Change the initial time as needed
+  remainingSeconds = 99; 
   timer.textContent = remainingSeconds;
   backgroundMusic.play();
   timerInterval = setInterval(updateTimer, 1000);
