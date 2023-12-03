@@ -115,7 +115,10 @@ function updateTimer() {
 function startGameTimer() {
   remainingSeconds = 99; 
   timer.textContent = remainingSeconds;
-  backgroundMusic.play();
+  if (backgroundMusic.paused) {
+    backgroundMusic.currentTime = 0;
+    backgroundMusic.play();
+  }
   timerInterval = setInterval(updateTimer, 1000);
 }
 
