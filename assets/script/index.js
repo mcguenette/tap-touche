@@ -9,11 +9,26 @@ const backModal = select('.modal-back');
 const overlay = select('.overlay');
 const startBtn = select('#start-btn');
 const countdownStart = select('#countdown-start');
-const guessContainer = select('.guess-card');
+const guessCard = select('.guess-card');
 const timer = select('#timer');
 const playAgain = select('#play-again');
+const wordInput = select('#tap-touche');
+const wordCount = select('#word-count span');
+const scoreCard = select('.score-card');
+const gameDate = select('#game-date');
+const gameScore = select('#game-score');
 
-// Game variables
+//music
+const backgroundMusic = select('#game-music');
+const correctWordSound = select('#word-sound');
+
+let currentWordIndex = 0;
+let correctWordCount = 0;
+let countdownInterval;
+let timerInterval;
+let remainingSeconds;
+let usedWords = []; // could not finish this part in time, should have
+                    // completed it when creating shuffle.
 const words = [
     'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
     'population', 'weather', 'bottle', 'history', 'dream', 'character', 'money',
@@ -35,158 +50,179 @@ const words = [
     'rebel', 'amber', 'jacket', 'article', 'paradox', 'social', 'resort', 'escape'
 ];
 
-let currentWordIndex = 0;
-let correctWordCount = 0;
-let countdownInterval;
-let timerInterval;
-let remainingSeconds;
+// Modal Functions
+function showDefaultModal() {
+  showFrontModal();
+}
 
-// Modal 
-const defaultModal = function () {
-    frontModal.classList.remove('hidden');
-    backModal.classList.add('hidden');
-    overlay.classList.remove('hidden');
-    modal.style.display = 'flex';
-};
+function showFrontModal() {
+  frontModal.classList.remove('hidden');
+  backModal.classList.add('hidden');
+  overlay.classList.remove('hidden');
+  modal.style.display = 'flex';
+}
 
-const switchModal = function () {
-    frontModal.classList.add('hidden');
-    backModal.classList.remove('hidden');
-    modal.style.display = 'flex';
-    startModalCountdown();
-};
+function showBackModal() {
+  frontModal.classList.add('hidden');
+  backModal.classList.remove('hidden');
+  modal.style.display = 'flex';
+  startModalCountdown();
+}
 
-const closeDefaultModal = function () {
-    frontModal.classList.add('hidden');
-    overlay.classList.add('hidden');
-    modal.style.display = 'none';
-};
+function closeModal() {
+  frontModal.classList.add('hidden');
+  backModal.classList.add('hidden');
+  overlay.classList.add('hidden');
+  modal.style.display = 'none';
+}
 
-const closeBackModal = function () {
-    backModal.classList.add('hidden');
-    overlay.classList.add('hidden');
-    modal.style.display = 'none';
-};
+function startModalCountdown() {
+  let count = 3;
+  countdownStart.textContent = count;
 
-const startModalCountdown = function () {
-    let count = 3;
-    countdownStart.textContent = count;
+  countdownInterval = setInterval(() => {
+    count--;
 
-    countdownInterval = setInterval(() => {
-        count--;
-
-        if (count > 0) {
-            countdownStart.textContent = count;
-        } else if (count === 0) {
-            countdownStart.textContent = 'GO!';
-        } else {
-            clearInterval(countdownInterval);
-            closeBackModal();
-            startGame();
-        }
-    }, 1000);
-};
-
-// Timer 
-const updateTimer = function () {
-    remainingSeconds--;
-    // tried to use guard clause here but did not work as expected.
-    if (remainingSeconds >= 0) {
-        timer.textContent = remainingSeconds;
-    if (remainingSeconds <= 10) {
-        timer.style.backgroundColor = '#db2806';
-    }
+    if (count > 0) {
+      countdownStart.textContent = count;
+    } else if (count === 0) {
+      countdownStart.textContent = 'GO!';
     } else {
-        clearInterval(timerInterval);
-        showPlayAgain();
-        endGame();
+      clearInterval(countdownInterval);
+      closeModal();
+      startGame();
     }
-};
+  }, 1000);
+}
 
-const startGameTimer = function () {
-    remainingSeconds = 99;
+// Timer Functions
+function updateTimer() {
+  remainingSeconds--;
+
+  if (remainingSeconds >= 0) {
     timer.textContent = remainingSeconds;
 
-    timerInterval = setInterval(updateTimer, 1000);
-};
-
-// Game 
-const startGame = function () {
-    currentWordIndex = 0;
-    correctWordCount = 0;
-    playAgain.style.visibility = 'hidden';
-
-    displayCurrentWord();
-    displayInput();
-    startGameTimer();
-};
-
-const displayCurrentWord = function () {
-    const wordOutput = select('#word-output');
-    const shuffledWords = shuffleArray(words);
-
-    wordOutput.textContent = shuffledWords[currentWordIndex];
-};
-
-const shuffleArray = function (array) {
-    let currentIndex = array.length, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    if (remainingSeconds <= 10) {
+      timer.style.backgroundColor = '#db2806';
     }
-    return array;
-};
-
-const showPlayAgain = function () {
-    playAgain.style.visibility = 'visible';
+  } else {
+    clearInterval(timerInterval);
+    showPlayAgain();
+    endGame();
+  }
 }
 
-
-const displayInput = function() {
-    guessContainer.style.display = 'flex';
-    guessContainer.style.backgroundColor = 'rgb(240 80 51 / 80%)';
+function startGameTimer() {
+  remainingSeconds = 10; // Change the initial time as needed
+  timer.textContent = remainingSeconds;
+  backgroundMusic.play();
+  timerInterval = setInterval(updateTimer, 1000);
 }
 
-const checkUserInput = function () {
-    const userInput = select('#tap-touche').value.toLowerCase().trim();
+// Game Functions
+function startGame() {
+  currentWordIndex = 0;
+  correctWordCount = 0;
+  wordCount.textContent = correctWordCount;
+  playAgain.style.visibility = 'hidden';
+  scoreCard.style.display = 'none';
+  wordInput.removeAttribute('disabled');
+
+  displayCurrentWord();
+  displayInput();
+  startGameTimer();
+}
+
+function displayCurrentWord() {
+  const wordOutput = select('#word-output');
+  const shuffledWords = shuffleArray(words);
+
+  wordOutput.textContent = shuffledWords[currentWordIndex];
+}
+
+function shuffleArray(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+  return array;
+}
+
+function showPlayAgain() {
+  playAgain.style.visibility = 'visible';
+  wordInput.value = '';
+}
+
+function displayInput() {
+  guessCard.style.display = 'flex';
+  guessCard.style.backgroundColor = 'rgb(240 80 51 / 80%)';
+}
+
+function checkUserInput() {
+    const userInput = wordInput.value.toLowerCase().trim();
     const currentWord = words[currentWordIndex].toLowerCase();
-
+  
     if (userInput === currentWord) {
-        correctWordCount++;
-
-        if (currentWordIndex < words.length - 1) {
-            currentWordIndex++;
-            displayCurrentWord();
-        } else {
-            endGame();
-        }
-
-        select('#tap-touche').value = '';
-        select('#word-count span').textContent = correctWordCount;
+      correctWordCount++;
+      correctWordSound.play();
+      if (currentWordIndex < words.length - 1) {
+        currentWordIndex++;
+      } else {
+        endGame();
+        return;
+      }
+  
+      displayCurrentWord();
+  
+      wordInput.value = '';
+      wordCount.textContent = correctWordCount;
     }
-};
+  }
+  
 
-const endGame = function () {
-    clearInterval(countdownInterval);
-    const remainingSeconds = timer.textContent;
-    const score = new Score(new Date(), correctWordCount, (correctWordCount / words.length) * 100);
-};
+function endGame() {
+  clearInterval(countdownInterval);
+  backgroundMusic.pause();
 
-// Events
+  const hits = correctWordCount;
+  const percentage = (hits / words.length) * 100;
+
+  const score = new Score(new Date(), hits, percentage);
+  wordInput.setAttribute('disabled', true);
+  showEndGame(score);
+}
+
+function showEndGame(score) {
+  scoreCard.classList.remove('hidden');
+  guessCard.classList.add('hidden');
+  scoreCard.style.display = 'flex';
+  gameDate.textContent = formatDate(score.date);
+  gameScore.textContent = `${score.hits} hits (${score.percentage.toFixed(2)}%)`;
+}
+
+function formatDate(date) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
+}
+
+// Event Listeners
 onEvent('keydown', document, function (e) {
-    if (e.key === 'Escape' && !frontModal.classList.contains('hidden')) {
-        closeDefaultModal();
-    }
+  if (e.key === 'Escape' && !frontModal.classList.contains('hidden')) {
+    closeModal();
+  }
 });
 
-onEvent('click', overlay, closeDefaultModal);
-onEvent('click', startBtn, switchModal);
+onEvent('click', overlay, closeModal);
+onEvent('click', startBtn, showBackModal);
 onEvent('click', playAgain, startGame);
-onEvent('input', select('#tap-touche'), checkUserInput);
+onEvent('input', wordInput, checkUserInput);
 
 // Load modal right away
-setTimeout(() => {
-    defaultModal();
-}, 100);
+setTimeout(showDefaultModal, 100);
