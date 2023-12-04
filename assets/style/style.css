@@ -318,6 +318,7 @@ input#tap-touche {
     margin-inline: auto;
     background-color: rgb(255 255 255 / 75%);
     color: var(--primary-orange);
+    font-size: 42px;
 }
 
 button#play-again {
