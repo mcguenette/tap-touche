@@ -130,6 +130,8 @@ function startGame() {
   playAgain.style.visibility = 'hidden';
   scoreCard.style.display = 'none';
   wordInput.removeAttribute('disabled');
+  wordInput.focus();
+
 
   displayCurrentWord();
   displayInput();
@@ -166,6 +168,7 @@ function showPlayAgain() {
 function displayInput() {
   guessCard.style.display = 'flex';
   guessCard.style.backgroundColor = 'rgb(240 80 51 / 80%)';
+  wordInput.focus();
 }
 
 function checkUserInput() {
