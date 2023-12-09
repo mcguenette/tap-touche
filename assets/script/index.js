@@ -70,8 +70,16 @@ function getHighScores() {
 }
 
 function saveHighScores(highScores, score) {
-  highScores.push(score);
-  highScores.sort((a, b) => (b?.hits ?? 0) - (a?.hits ?? 0));
+  const existingScoreIndex = highScores.findIndex(existingScore => 
+    existingScore.hits === score.hits && existingScore.percentage === score.percentage
+  );
+  if (existingScoreIndex !== -1) {
+    highScores[existingScoreIndex] = score;
+  } else {
+    highScores.push(score);
+  }
+
+  highScores.sort((a, b) => scoreCheck(b, 'hits', 0) - scoreCheck(a, 'hits', 0));
   highScores.splice(MAX_HIGH_SCORES);
   localStorage.setItem('highScores', JSON.stringify(highScores));
 }
@@ -256,14 +264,20 @@ function endGame() {
 }
 
 function showEndGame(score) {
-  let today = new Date();
   scoreCard.classList.remove('hidden');
   guessCard.classList.add('hidden');
   scoreCard.style.display = 'flex';
   buttonWrapper.style.justifyContent = 'space-between';
-  gameDate.textContent = formatDate(score.date);
-  gameScore.textContent = `${score.hits} hits (${score.percentage.toFixed(2)}%)`;
+
+  if (score) {
+    gameDate.textContent = formatDate(score.date ? score.date : today());
+    gameScore.textContent = `${score.hits} hits (${score.percentage.toFixed(2)}%)`;
+  } else {
+    gameDate.textContent = formatDate(today());
+    gameScore.textContent = 'No score';
+  }
 }
+
 
 function formatDate(date) {
   if (!(date instanceof Date)) {
@@ -287,14 +301,13 @@ function updateToggle() {
   toggleSidebar.classList.toggle('fa-circle-chevron-left', sidebarIsOpen);
   toggleSidebar.style.color = sidebarIsOpen ? '#61cce5' : '#61cce5';
   sidebarToggle.style.display = sidebarIsOpen ? 'none' : 'inline';
-  
-  displayHighScores();
 }
 
 
 function openSideBar() {
   highScoreSidebar.classList.add('open');
   updateToggle();
+  displayHighScores();
 }
 
 function closeSideBar() {
@@ -341,5 +354,6 @@ onEvent('click', viewScores, () => {
 onEvent('input', wordInput, checkUserInput);
 
 // Load modal right away
-setTimeout(() => dialog.showModal(), 100);
-displayHighScores();
+setTimeout(() => {
+  dialog.showModal();
+}, 100);
