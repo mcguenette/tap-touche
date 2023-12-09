@@ -71,7 +71,7 @@ function getHighScores() {
 
 function saveHighScores(highScores, score) {
   highScores.push(score);
-  highScores.sort((a, b) => b.hits - a.hits);
+  highScores.sort((a, b) => (b?.hits ?? 0) - (a?.hits ?? 0));
   highScores.splice(MAX_HIGH_SCORES);
   localStorage.setItem('highScores', JSON.stringify(highScores));
 }
