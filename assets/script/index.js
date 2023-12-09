@@ -62,7 +62,6 @@ function generateHighScore(hits, percentage, date) {
 
 function getHighScores() {
   const highScoresJSON = localStorage.getItem('highScores');
-  console.log(highScoresJSON);
   return highScoresJSON ? JSON.parse(highScoresJSON) : [];
 }
 
@@ -77,9 +76,16 @@ function saveHighScores(highScores, score) {
 function displayHighScores() {
   const highScoresDiv = select('#high-scores ul');
   const highScores = getHighScores();
+  let filteredScores = [];
+
   highScoresDiv.innerHTML = '';
 
-  const filteredScores = highScores.filter(score => score.hits > 0);
+  if(highScores.length > 0){
+    filteredScores = highScores.filter(score => score.hits > 0);
+  } else {
+    return;
+  }
+  
 
   if (filteredScores.length > 0) {
     const topScores = filteredScores
