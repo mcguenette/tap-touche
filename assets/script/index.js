@@ -79,14 +79,8 @@ function displayHighScores() {
   let filteredScores = [];
 
   highScoresDiv.innerHTML = '';
-
-  if(highScores.length > 0){
-    filteredScores = highScores.filter(score => score.hits > 0);
-  } else {
-    return;
-  }
+  filteredScores = highScores.filter(score => score.hits > 0);
   
-
   if (filteredScores.length > 0) {
     const topScores = filteredScores
       .sort((a, b) => b.hits - a.hits)
