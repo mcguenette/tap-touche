@@ -1,4 +1,5 @@
 ![](https://github.com/mcguenette/type-dunk/blob/main/assets/img/typedunk-logo.png)
+
 Click here for [demo](https://mcguenette.github.io/type-dunk/)
 
 Things to add/improve:
