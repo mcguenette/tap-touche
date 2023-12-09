@@ -16,7 +16,7 @@
 body {
     min-height: 100%;
     font-family: 'Poppins', sans-serif;
-    background: url(../img/basketball-bg2.png) no-repeat center center fixed; 
+    background: url(../img/basketball-bg2.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -37,7 +37,8 @@ main {
     margin-inline: auto;
 }
 
-h1, h2 {
+h1,
+h2 {
     color: var(--light-color);
     font-size: 42px;
 }
@@ -47,7 +48,8 @@ h3 {
     font-size: 34px;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: 'Londrina Solid', sans-serif;
 }
 
@@ -67,16 +69,26 @@ h1, h2 {
     width: 300px;
 }
 
-input, button {
+input,
+button {
     padding: 7px 15px;
     border-radius: 4px;
     height: 42px;
     width: auto;
     transition: all 0.5s ease;
     width: auto;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Poppins', sans-serif;
     border-radius: 6px;
+}
+
+.button-wrapper button#play-again {
+    display: flex;
+    align-items: center;
+}
+
+input#start-btn {
+    width: 100px;
 }
 
 i.fa-solid.fa-rotate-left {
@@ -87,11 +99,12 @@ i.fa-solid.fa-rotate-left {
 .button-wrapper {
     z-index: 2;
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 25px;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: 300px;
 }
+
 .primary-button {
     background-color: var(--primary-red);
     color: var(--light-color);
@@ -107,7 +120,7 @@ i.fa-solid.fa-rotate-left {
 }
 
 .secondary-button:hover {
-    background-color: var(--secondary-blue);
+    background-color: #56bdd5;
 }
 
 /* Modal */
@@ -133,10 +146,12 @@ dialog {
 }
 
 @keyframes anim {
-    from{
+    from {
         opacity: 0;
         translate: 0 -8px;
-    } to {
+    }
+
+    to {
         opacity: 1;
         translate: 0 0;
     }
@@ -167,16 +182,15 @@ dialog {
     flex-direction: column;
 }
 
-/* .modal-back {
-    transform: rotateY(180deg);
-} */
 
 /* Header and content styles */
-.modal-header, .modal-button {
+.modal-header,
+.modal-button {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .modal-header {
     font-size: 34px;
 }
@@ -190,7 +204,7 @@ dialog {
     color: var(--light-color);
 }
 
-.modal-front .modal-content{
+.modal-front .modal-content {
     align-items: flex-start;
 }
 
@@ -207,14 +221,17 @@ dialog {
     font-size: 14px;
 }
 
-.modal-front .modal-content h3, .modal-content li {
+.modal-front .modal-content h3,
+.modal-content li {
     text-align: left;
 }
 
-.modal-back .modal-content h3, .modal-front .modal-content h3 {
+.modal-back .modal-content h3,
+.modal-front .modal-content h3 {
     text-align: center;
     color: var(--light-color);
     font-size: 24px;
+    font-family: 'Orbitron', sans-serif;
 }
 
 
@@ -257,7 +274,8 @@ dialog::backdrop {
     height: 100dvh;
 }
 
-.guess-card, .score-card {
+.guess-card,
+.score-card {
     position: relative;
     display: none;
     text-align: center;
@@ -272,7 +290,7 @@ dialog::backdrop {
 }
 
 .score-card {
-    background-color: rgb(65 116 230 / 90%);
+    background-color: rgb(142 70 233 / 90%);
     margin-top: 0;
     width: 600px;
     height: 352px;
@@ -287,13 +305,15 @@ dialog::backdrop {
     font-size: 44px;
 }
 
-#game-score, #game-date {
+#game-score,
+#game-date {
     font-size: 26px;
     font-family: 'Orbitron', sans-serif;
     color: var(--light-color);
 }
 
-#timer, #countdown-start {
+#timer,
+#countdown-start {
     font-family: 'Orbitron', sans-serif;
     background-color: var(--primary-blue);
     border-radius: 50%;
@@ -303,7 +323,8 @@ dialog::backdrop {
     margin-inline: auto;
 }
 
-#word-output, #type-dunk {
+#word-output,
+#type-dunk {
     font-family: 'Londrina Solid', sans-serif;
     text-transform: uppercase;
     color: var(--light-color);
@@ -314,12 +335,19 @@ dialog::backdrop {
     line-height: 60px;
 }
 
-div#word-count {
+#word-count {
     color: var(--light-color);
     position: absolute;
     top: 10px;
     right: 20px;
     font-size: 24px;
+}
+
+#word-count span {
+    color: var(--light-color);
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    padding: 5px 15px;
 }
 
 input#type-dunk {
@@ -348,7 +376,7 @@ input#type-dunk {
     position: fixed;
     top: 0;
     left: -300px;
-    background-color: rgb(98 205 229 / 80%);
+    background-color: rgb(142 70 233 / 75%);
     transition: left 0.3s ease;
     overflow: hidden;
 }
@@ -363,6 +391,10 @@ input#type-dunk {
     left: 0px;
 }
 
+.scores-header h3 {
+    color: var(--primary-blue);
+}
+
 #toggle-sidebar {
     position: absolute;
     top: 45px;
@@ -375,6 +407,23 @@ input#type-dunk {
     transition: left 0.3s ease;
 }
 
+#toggle-sidebar {
+    color: #61cce5;
+}
+
+#toggle-sidebar.open {
+    color: #8e46e9;
+}
+
+i#toggle-sidebar span {
+    font-size: 23px;
+    font-family: 'Orbitron', sans-serif;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: var(--light-color);
+    font-weight: 500;
+}
+
 #high-scores.open #toggle-sidebar {
-    left: 200px; 
+    left: 200px;
 }

@@ -9,6 +9,7 @@ const backModal = select('.modal-back');
 const startButton = select('#start-btn');
 const countdownStart = select('#countdown-start');
 const guessCard = select('.guess-card');
+const buttonWrapper = select('.button-wrapper');
 const timer = select('#timer');
 const playAgain = select('#play-again');
 const viewScores = select('#view-scores');
@@ -17,6 +18,9 @@ const wordCount = select('#word-count span');
 const scoreCard = select('.score-card');
 const gameDate = select('#game-date');
 const gameScore = select('#game-score');
+const toggleSidebar = select('#toggle-sidebar');
+const highScoreSidebar = select('#high-scores');
+const sidebarToggle = select('#toggle-sidebar span');
 
 // Music
 const backgroundMusic = select('#game-music');
@@ -160,6 +164,7 @@ function startGame() {
   correctWordCount = 0;
   wordCount.textContent = correctWordCount;
   playAgain.innerHTML = '<i class="fa-solid fa-rotate-left"></i> Reset';
+  buttonWrapper.style.justifyContent = 'center';
   viewScores.style.display = 'none';
   scoreCard.style.display = 'none';
   wordInput.removeAttribute('disabled');
@@ -224,8 +229,7 @@ function endGame() {
   wordInput.value = '';
   const hits = correctWordCount;
   const percentage = (hits / words.length) * 100;
-
-  // Only save the score if the user has scored points
+  timer.style.backgroundColor = 'rgb(255 60 91)';
   if (hits > 0) {
     const score = generateHighScore(hits, percentage, new Date());
 
@@ -233,12 +237,10 @@ function endGame() {
     highScores.push(score);
     highScores.sort((a, b) => a.percentage - b.percentage);
     saveHighScores(highScores);
-
     wordInput.setAttribute('disabled', true);
     showEndGame(score);
   } else {
-    // If no points were scored, you might want to display a message or take appropriate action
-    console.log('No points scored. Game over.');
+    showEndGame();
   }
 }
 
@@ -248,6 +250,7 @@ function showEndGame(score) {
   scoreCard.classList.remove('hidden');
   guessCard.classList.add('hidden');
   scoreCard.style.display = 'flex';
+  buttonWrapper.style.justifyContent = 'space-between';
   gameDate.textContent = formatDate(score.date);
   gameScore.textContent = `${score.hits} hits (${score.percentage.toFixed(2)}%)`;
 }
@@ -262,31 +265,33 @@ function formatDate(date) {
 }
 
 // Sidebar toggle
-const toggleSidebar = select('#toggle-sidebar');
-const highScoreSidebar = select('#high-scores');
-
 toggleSidebar.addEventListener('click', () => {
   highScoreSidebar.classList.toggle('open');
-  updateToggleArrow();
+  updateToggle();
 });
 
-function updateToggleArrow() {
-  const isOpen = highScoreSidebar.classList.contains('open');
-  toggleSidebar.style.left = isOpen ? '290px' : '25px';
-  toggleSidebar.classList.toggle('fa-circle-chevron-right', !isOpen);
-  toggleSidebar.classList.toggle('fa-circle-chevron-left', isOpen);
+function updateToggle() {
+  const sidebarIsOpen = highScoreSidebar.classList.contains('open');
+  toggleSidebar.style.left = sidebarIsOpen ? '290px' : '25px';
+  toggleSidebar.classList.toggle('fa-circle-chevron-right', !sidebarIsOpen);
+  toggleSidebar.classList.toggle('fa-circle-chevron-left', sidebarIsOpen);
+  toggleSidebar.style.color = sidebarIsOpen ? '#61cce5' : '#61cce5';
+  sidebarToggle.style.display = sidebarIsOpen ? 'none' : 'inline';
+  
   displayHighScores();
 }
 
+
 function openSideBar() {
-  highScoreSidebar.classList.toggle('open');
-  updateToggleArrow();
+  highScoreSidebar.classList.add('open');
+  updateToggle();
 }
 
 function closeSideBar() {
   highScoreSidebar.classList.remove('open');
-  updateToggleArrow();
+  updateToggle();
 }
+
 
 
 // Event listeners
@@ -314,7 +319,15 @@ onEvent('click', playAgain, () => {
 
 onEvent('click', document, () => wordInput.focus());
 onEvent('click', startButton, showBackDialog);
-onEvent('click', viewScores, openSideBar);
+onEvent('click', viewScores, () => {
+  const sidebarIsOpen = highScoreSidebar.classList.contains('open');
+  if (sidebarIsOpen) {
+    closeSideBar();
+  } else {
+    openSideBar();
+  }
+});
+
 onEvent('input', wordInput, checkUserInput);
 
 // Load modal right away
