@@ -236,7 +236,7 @@ function endGame() {
 
     const highScores = getHighScores();
     highScores.push(score);
-    highScores.sort((a, b) => a.percentage - b.percentage);
+    highScores.sort((a, b) => (a.percentage || 0) - (b.percentage || 0));
     saveHighScores(highScores);
     wordInput.setAttribute('disabled', true);
     showEndGame(score);
