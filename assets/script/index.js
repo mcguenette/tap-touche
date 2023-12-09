@@ -79,8 +79,8 @@ function displayHighScores() {
   let filteredScores = [];
 
   highScoresDiv.innerHTML = '';
-  filteredScores = highScores.filter(score => score.hits > 0);
-  
+  filteredScores = highScores.filter(score => score && score.hits > 0);
+
   if (filteredScores.length > 0) {
     const topScores = filteredScores
       .sort((a, b) => b.hits - a.hits)
