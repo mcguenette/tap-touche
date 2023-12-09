@@ -2,16 +2,17 @@
 
 import { onEvent, select } from './utils.js';
 
+// DOM elements
 const dialog = select('dialog');
 const frontModal = select('.modal-front');
 const backModal = select('.modal-back');
-const overlay = select('.overlay');
-const startBtn = select('#start-btn');
+const startButton = select('#start-btn');
 const countdownStart = select('#countdown-start');
 const guessCard = select('.guess-card');
 const timer = select('#timer');
 const playAgain = select('#play-again');
-const wordInput = select('#tap-touche');
+const viewScores = select('#view-scores');
+const wordInput = select('#type-dunk');
 const wordCount = select('#word-count span');
 const scoreCard = select('.score-card');
 const gameDate = select('#game-date');
@@ -21,6 +22,8 @@ const gameScore = select('#game-score');
 const backgroundMusic = select('#game-music');
 const correctWordSound = select('#word-sound');
 
+// Game variables
+const MAX_HIGH_SCORES = 20;
 let currentWordIndex = 0;
 let correctWordCount = 0;
 let countdownInterval;
@@ -48,52 +51,56 @@ const words = [
   'rebel', 'amber', 'jacket', 'article', 'paradox', 'social', 'resort', 'escape'
  ];
 
-// Function to generate high score object
+// High score functions
 function generateHighScore(hits, percentage, date) {
-  return {
-    hits,
-    percentage,
-    date,
-  };
+  return { hits, percentage, date };
 }
 
-// Function to get high scores from localStorage
 function getHighScores() {
   const highScoresJSON = localStorage.getItem('highScores');
+  console.log(highScoresJSON);
   return highScoresJSON ? JSON.parse(highScoresJSON) : [];
 }
 
-// Function to save high scores to localStorage
 function saveHighScores(highScores) {
-  localStorage.setItem('highScores', JSON.stringify(highScores));
+  highScores.sort((a, b) => a.hits - b.hits);
+  const topScores = highScores.slice(0, MAX_HIGH_SCORES);
+  localStorage.setItem('highScores', JSON.stringify(topScores));
 }
+
 
 function displayHighScores() {
-  const highScoresContainer = select('#high-scores ul');
+  const highScoresDiv = select('#high-scores ul');
   const highScores = getHighScores();
+  highScoresDiv.innerHTML = '';
 
-  highScoresContainer.innerHTML = '';
+  const filteredScores = highScores.filter(score => score.hits > 0);
 
-  const topScores = highScores.slice(0, 5);
+  if (filteredScores.length > 0) {
+    const topScores = filteredScores
+      .sort((a, b) => b.hits - a.hits)
+      .slice(0, 10);
 
-  for (let i = 0; i < topScores.length; i++) {
-    const score = topScores[i];
-    const listItem = document.createElement('li');
-    listItem.textContent = `${formatDate(score.date)}: ${score.hits} hits (${score.percentage.toFixed(2)}%)`;
-    highScoresContainer.appendChild(listItem);
-  }
-
-  // Update the display based on whether the sidebar is open
-  const highScoreSidebar = select('#high-scores');
-  if (highScoreSidebar.classList.contains('open')) {
-    highScoreSidebar.style.display = 'block';
+    for (let i = 0; i < topScores.length; i++) {
+      const score = topScores[i];
+      const listItem = document.createElement('li');
+      listItem.textContent = `${formatDate(score.date)}: ${score.hits} hits (${score.percentage.toFixed(2)}%)`;
+      highScoresDiv.appendChild(listItem);
+    }
   } else {
-    highScoreSidebar.style.display = 'none';
+    // Add a message for no scores if the array is empty
+    const noScoresMessage = document.createElement('li');
+    noScoresMessage.textContent = 'No games played';
+    highScoresDiv.appendChild(noScoresMessage);
   }
+
+  const highScoreSidebar = select('#high-scores');
+  highScoreSidebar.style.display = highScoreSidebar.classList.contains('open') ? 'block' : 'none';
 }
 
 
 
+// Modal functions
 function showBackDialog() {
   frontModal.classList.add('hidden');
   backModal.classList.remove('hidden');
@@ -119,6 +126,7 @@ function startModalCountdown() {
   }, 1000);
 }
 
+// Timer functions
 function updateTimer() {
   remainingSeconds--;
 
@@ -129,6 +137,7 @@ function updateTimer() {
       timer.style.backgroundColor = 'rgb(255 60 91)';
     }
   } else {
+    timer.style.backgroundColor = '#61cce5';
     clearInterval(timerInterval);
     endGame();
   }
@@ -145,11 +154,13 @@ function startGameTimer() {
   timerInterval = setInterval(updateTimer, 1000);
 }
 
+// Game functions
 function startGame() {
   currentWordIndex = 0;
   correctWordCount = 0;
   wordCount.textContent = correctWordCount;
   playAgain.innerHTML = '<i class="fa-solid fa-rotate-left"></i> Reset';
+  viewScores.style.display = 'none';
   scoreCard.style.display = 'none';
   wordInput.removeAttribute('disabled');
   wordInput.focus();
@@ -168,16 +179,12 @@ function displayCurrentWord() {
 }
 
 function shuffleArray(array) {
-  let currentIndex = array.length,
-    randomIndex;
+  let currentIndex = array.length, randomIndex;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
   return array;
 }
@@ -213,27 +220,35 @@ function endGame() {
   clearInterval(countdownInterval);
   backgroundMusic.pause();
   playAgain.innerHTML = ' <i class="fa-solid fa-rotate-left"></i> Play again';
+  viewScores.style.display = 'inline-block';
   wordInput.value = '';
   const hits = correctWordCount;
   const percentage = (hits / words.length) * 100;
 
-  const score = generateHighScore(hits, percentage, new Date());
-  wordInput.setAttribute('disabled', true);
+  // Only save the score if the user has scored points
+  if (hits > 0) {
+    const score = generateHighScore(hits, percentage, new Date());
 
-  const highScores = getHighScores();
-  highScores.push(score);
-  highScores.sort((a, b) => b.percentage - a.percentage);
-  saveHighScores(highScores);
+    const highScores = getHighScores();
+    highScores.push(score);
+    highScores.sort((a, b) => a.percentage - b.percentage);
+    saveHighScores(highScores);
 
-  showEndGame(score);
+    wordInput.setAttribute('disabled', true);
+    showEndGame(score);
+  } else {
+    // If no points were scored, you might want to display a message or take appropriate action
+    console.log('No points scored. Game over.');
+  }
 }
+
+
 
 function showEndGame(score) {
   scoreCard.classList.remove('hidden');
   guessCard.classList.add('hidden');
   scoreCard.style.display = 'flex';
   gameDate.textContent = formatDate(score.date);
-  // Display the updated high scores in the sidebar
   gameScore.textContent = `${score.hits} hits (${score.percentage.toFixed(2)}%)`;
 }
 
@@ -246,8 +261,9 @@ function formatDate(date) {
   return date.toLocaleDateString(undefined, options);
 }
 
-const toggleSidebar = document.getElementById('toggle-sidebar');
-const highScoreSidebar = document.getElementById('high-scores');
+// Sidebar toggle
+const toggleSidebar = select('#toggle-sidebar');
+const highScoreSidebar = select('#high-scores');
 
 toggleSidebar.addEventListener('click', () => {
   highScoreSidebar.classList.toggle('open');
@@ -256,18 +272,49 @@ toggleSidebar.addEventListener('click', () => {
 
 function updateToggleArrow() {
   const isOpen = highScoreSidebar.classList.contains('open');
-  toggleSidebar.style.left = isOpen ? '290px' : '10px';
+  toggleSidebar.style.left = isOpen ? '290px' : '25px';
   toggleSidebar.classList.toggle('fa-circle-chevron-right', !isOpen);
   toggleSidebar.classList.toggle('fa-circle-chevron-left', isOpen);
   displayHighScores();
 }
-// Added always focus on input - feedback
-onEvent('click', document, () => {
-  wordInput.focus();
+
+function openSideBar() {
+  highScoreSidebar.classList.toggle('open');
+  updateToggleArrow();
+}
+
+function closeSideBar() {
+  highScoreSidebar.classList.remove('open');
+  updateToggleArrow();
+}
+
+
+// Event listeners
+
+// Added new one to handle clicking reset or play again
+onEvent('click', playAgain, () => {
+  clearInterval(countdownInterval);
+  clearInterval(timerInterval);
+
+  countdownStart.textContent = '';
+  timer.textContent = '';
+  timer.style.backgroundColor = '';
+
+
+  frontModal.classList.add('hidden');
+  backModal.classList.remove('hidden');
+  scoreCard.classList.add('hidden');
+  guessCard.classList.add('hidden');
+
+  dialog.showModal();
+  startModalCountdown();
+  closeSideBar();
 });
 
-onEvent('click', startBtn, showBackDialog);
-onEvent('click', playAgain, startGame);
+
+onEvent('click', document, () => wordInput.focus());
+onEvent('click', startButton, showBackDialog);
+onEvent('click', viewScores, openSideBar);
 onEvent('input', wordInput, checkUserInput);
 
 // Load modal right away

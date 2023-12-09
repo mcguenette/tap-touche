@@ -4,7 +4,7 @@
 :root {
     --primary-dark: #1F232F;
     --secondary-dark-color: #27254C;
-    --light-color: #F2ECF8;
+    --light-color: #fff;
     --primary-blue: #61cce5;
     --secondary-blue: #4174e6;
     --primary-red: rgb(255 60 91);
@@ -23,8 +23,6 @@ body {
     background-size: cover;
     overflow: hidden;
 }
-
-
 
 header {
     height: 0px;
@@ -61,8 +59,12 @@ h1, h2 {
     height: 120px;
 }
 
-.game-header img, .modal-header img {
+.game-header img {
     width: 250px;
+}
+
+.modal-header img {
+    width: 300px;
 }
 
 input, button {
@@ -82,6 +84,14 @@ i.fa-solid.fa-rotate-left {
     font-size: 14px;
 }
 
+.button-wrapper {
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
 .primary-button {
     background-color: var(--primary-red);
     color: var(--light-color);
@@ -94,7 +104,6 @@ i.fa-solid.fa-rotate-left {
 .secondary-button {
     background-color: var(--primary-blue);
     color: var(--light-color);
-    z-index: 2;
 }
 
 .secondary-button:hover {
@@ -170,7 +179,6 @@ dialog {
 }
 .modal-header {
     font-size: 34px;
-    color: var(--primary-orange);
 }
 
 .modal-content {
@@ -191,7 +199,7 @@ dialog {
 }
 
 .modal-content span {
-    color: var(--primary-orange);
+    color: var(--primary-blue);
     font-weight: 600;
 }
 
@@ -206,7 +214,7 @@ dialog {
 .modal-back .modal-content h3, .modal-front .modal-content h3 {
     text-align: center;
     color: var(--light-color);
-    font-size: 28px;
+    font-size: 24px;
 }
 
 
@@ -264,7 +272,7 @@ dialog::backdrop {
 }
 
 .score-card {
-    background-color: rgb(255 60 91 / 80%);
+    background-color: rgb(65 116 230 / 90%);
     margin-top: 0;
     width: 600px;
     height: 352px;
@@ -275,13 +283,14 @@ dialog::backdrop {
 }
 
 .score-card h3 {
-    color: var(--light-color);
+    color: var(--primary-red);
     font-size: 44px;
 }
 
 #game-score, #game-date {
-    font-size: 18px;
-    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--light-color);
 }
 
 #timer, #countdown-start {
@@ -294,7 +303,7 @@ dialog::backdrop {
     margin-inline: auto;
 }
 
-#word-output, #tap-touche {
+#word-output, #type-dunk {
     font-family: 'Londrina Solid', sans-serif;
     text-transform: uppercase;
     color: var(--light-color);
@@ -310,16 +319,16 @@ div#word-count {
     position: absolute;
     top: 10px;
     right: 20px;
-    font-size: 16px;
+    font-size: 24px;
 }
 
-input#tap-touche {
+input#type-dunk {
     height: 42px;
     width: 300px;
     text-align: center;
     margin-inline: auto;
     background-color: rgb(255 255 255 / 75%);
-    color: var(--primary-orange);
+    color: var(--primary-blue);
     font-size: 42px;
 }
 
@@ -351,13 +360,13 @@ input#tap-touche {
 }
 
 #high-scores.open {
-    left: 0;
+    left: 0px;
 }
 
 #toggle-sidebar {
     position: absolute;
-    top: 60px;
-    left: 10px;
+    top: 45px;
+    left: 25px;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 34px;
@@ -367,5 +376,5 @@ input#tap-touche {
 }
 
 #high-scores.open #toggle-sidebar {
-    left: 200px; /* Adjust based on the sidebar width */
+    left: 200px; 
 }
