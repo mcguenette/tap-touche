@@ -56,8 +56,12 @@ const words = [
  ];
 
 // High score functions
+
+function today(date) {
+  return date instanceof Date ? date : new Date();
+}
 function generateHighScore(hits, percentage, date) {
-  return { hits, percentage, date };
+  return { hits, percentage, date: today(date) };
 }
 
 function getHighScores() {
@@ -159,6 +163,11 @@ function startGameTimer() {
   timerInterval = setInterval(updateTimer, 1000);
 }
 
+// Helper functions
+function scoreCheck(obj, prop, defaultValue = null) {
+  return obj && obj[prop] !== undefined && obj[prop] !== null ? obj[prop] : defaultValue;
+}
+
 // Game functions
 function startGame() {
   currentWordIndex = 0;
@@ -231,13 +240,14 @@ function endGame() {
   const hits = correctWordCount;
   const percentage = (hits / words.length) * 100;
   timer.style.backgroundColor = 'rgb(255 60 91)';
+
   if (hits > 0) {
     const score = generateHighScore(hits, percentage, new Date());
 
     const highScores = getHighScores();
     highScores.push(score);
-    highScores.sort((a, b) => (a?.percentage ?? 0) - (b?.percentage ?? 0));
-    saveHighScores(highScores);
+      highScores.sort((a, b) => scoreCheck(a, 'percentage', 0) - scoreCheck(b, 'percentage', 0));
+    saveHighScores(highScores, score);
     wordInput.setAttribute('disabled', true);
     showEndGame(score);
   } else {
@@ -246,6 +256,7 @@ function endGame() {
 }
 
 function showEndGame(score) {
+  let today = new Date();
   scoreCard.classList.remove('hidden');
   guessCard.classList.add('hidden');
   scoreCard.style.display = 'flex';
