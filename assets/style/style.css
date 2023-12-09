@@ -2,25 +2,25 @@
 @import url(./reset.css);
 
 :root {
-    --primary-dark: #202124;
-    --secondary-dark-color: #ffffff0d;
-    --light-color: #f3f9ff;
-    --primary-blue: #c4dfff;
-    --secondary-blue: rgb(0, 119, 198);
-    --primary-green: rgb(170 204 55);
-    --secondary-green: #3eb667;
-    --primary-red: #f05033;
-    --secondary-red: #db2806;
-    --primary-orange: #f90;
-    --secondary-orange: rgb(212, 127, 0);
-    --primary-purple: #90f;
+    --primary-dark: #1F232F;
+    --secondary-dark-color: #27254C;
+    --light-color: #fff;
+    --primary-blue: #61cce5;
+    --secondary-blue: #4174e6;
+    --primary-red: rgb(255 60 91);
+    --secondary-red: rgb(196, 47, 72);
+    --primary-purple: #9c93e6;
+    --secondary-purple: #8e46e9;
 }
 
 body {
     min-height: 100%;
     font-family: 'Poppins', sans-serif;
-    background-image: url(../img/nouveautes-2018-2x.png);
-    background-repeat: round;
+    background: url(../img/basketball-bg2.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     overflow: hidden;
 }
 
@@ -37,12 +37,19 @@ main {
     margin-inline: auto;
 }
 
-h1 {
-    color: var(--primary-orange);
+h1,
+h2 {
+    color: var(--light-color);
     font-size: 42px;
 }
 
-h1, h2 {
+h3 {
+    color: var(--secondary-purple);
+    font-size: 34px;
+}
+
+h1,
+h2 {
     font-family: 'Londrina Solid', sans-serif;
 }
 
@@ -50,31 +57,53 @@ h1, h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    margin-top: 40px;
     flex-direction: row;
+    height: 120px;
 }
 
 .game-header img {
-    border-radius: 50%;
-    width: 75px;
+    width: 250px;
 }
 
-input, button {
+.modal-header img {
+    width: 300px;
+}
+
+/* Buttons */
+input,
+button {
     padding: 7px 15px;
     border-radius: 4px;
     height: 42px;
     width: auto;
     transition: all 0.5s ease;
     width: auto;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Poppins', sans-serif;
     border-radius: 6px;
+}
+
+.button-wrapper button#play-again {
+    display: flex;
+    align-items: center;
+}
+
+input#start-btn {
+    width: 100px;
 }
 
 i.fa-solid.fa-rotate-left {
     margin-right: 5px;
     font-size: 14px;
+}
+
+.button-wrapper {
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: 300px;
 }
 
 .primary-button {
@@ -87,12 +116,12 @@ i.fa-solid.fa-rotate-left {
 }
 
 .secondary-button {
-    background-color: var(--primary-green);
+    background-color: var(--primary-blue);
     color: var(--light-color);
 }
 
 .secondary-button:hover {
-    background-color: var(--secondary-green);
+    background-color: #56bdd5;
 }
 
 /* Modal */
@@ -106,23 +135,28 @@ i.fa-solid.fa-rotate-left {
     align-items: center;
 }
 
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
-        rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-    display: none;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 0.4rem;
+dialog {
+    margin: auto;
     width: 600px;
-    height: 300px;
-    padding: 20px;
-    background-color: rgb(62 182 103 / 60%);
-    border-radius: 6px;
-    z-index: 2;
+    height: 352px;
+    padding: 19px 25px 24px 25px;
+    background-color: rgb(143 70 233 / 80%);
+    border-style: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgb(0 0 0 / 0.2);
+    animation: 0.2s linear anim;
+}
+
+@keyframes anim {
+    from {
+        opacity: 0;
+        translate: 0 -8px;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
 }
 
 
@@ -133,36 +167,28 @@ i.fa-solid.fa-rotate-left {
     transition: transform 0.5s ease-in-out;
 }
 
-.modal.hidden .modal-container {
-    transform: rotateY(180deg);
-}
-
 .modal-front,
 .modal-back {
-    /* position: absolute; */
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
 }
 
 .modal-back {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
-/* .modal-back {
-    transform: rotateY(180deg);
-} */
-
 /* Header and content styles */
-.modal .modal-header, .modal-button {
+.modal-header,
+.modal-button {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.modal .modal-header {
+
+.modal-header {
     font-size: 34px;
-    color: var(--primary-orange);
 }
 
 .modal-content {
@@ -174,7 +200,7 @@ i.fa-solid.fa-rotate-left {
     color: var(--light-color);
 }
 
-.modal-front .modal-content{
+.modal-front .modal-content {
     align-items: flex-start;
 }
 
@@ -182,9 +208,8 @@ i.fa-solid.fa-rotate-left {
     text-align: center;
 }
 
-
 .modal-content span {
-    color: var(--primary-orange);
+    color: var(--primary-blue);
     font-weight: 600;
 }
 
@@ -192,38 +217,33 @@ i.fa-solid.fa-rotate-left {
     font-size: 14px;
 }
 
-.modal-front .modal-content h3, .modal-content li {
+.modal-front .modal-content h3,
+.modal-content li {
     text-align: left;
 }
 
-.modal-back .modal-content h3 {
+.modal-back .modal-content h3, .modal-front .modal-content h3 {
     text-align: center;
+    color: var(--primary-red);
+    font-size: 24px;
+    font-family: 'Orbitron', sans-serif;
 }
-
 
 span#countdown-start {
     font-size: 42px;
     color: var(--light-color);
-    background-color: var(--primary-red);
+    background-color: var(--primary-blue);
     margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Add any additional styles for the modal footer or other elements */
+/* Dialog NEW */
 
-.overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-    z-index: 1;
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.548);
+    backdrop-filter: blur(4px);
 }
 
 .hidden {
@@ -237,7 +257,7 @@ span#countdown-start {
     cursor: pointer;
 }
 
-/* Input/Guess */
+/* Cards */
 
 .guess-section {
     display: flex;
@@ -248,7 +268,8 @@ span#countdown-start {
     height: 100dvh;
 }
 
-.guess-card, .score-card {
+.guess-card,
+.score-card {
     position: relative;
     display: none;
     text-align: center;
@@ -257,34 +278,38 @@ span#countdown-start {
     align-items: center;
     border-radius: 6px;
     width: 600px;
-    gap: 15px;
+    gap: 25px;
     padding: 20px;
     font-family: 'Orbitron', sans-serif;
 }
 
 .score-card {
-    background-color: #e78b00ab;
-    margin-top: 20px;
-    width: 250px;
-    color: var(--light-color);
-    gap: 0px;
+    background-color: rgb(142 70 233 / 90%);
+    margin-top: 0;
+    width: 600px;
+    height: 352px;
     position: absolute;
-    bottom: 10px;
+    top: 31%;
+    gap: 5px;
+    z-index: 2;
 }
 
 .score-card h3 {
-    color: var(--secondary-red);
-    font-size: 24px;
+    color: var(--primary-red);
+    font-size: 44px;
 }
 
-#game-score, #game-date {
-    font-size: 18px;
-    font-family: 'Poppins', sans-serif;
-}
-
-#timer, #countdown-start {
+#game-score,
+#game-date {
+    font-size: 26px;
     font-family: 'Orbitron', sans-serif;
-    background-color: var(--primary-orange);
+    color: var(--light-color);
+}
+
+#timer,
+#countdown-start {
+    font-family: 'Orbitron', sans-serif;
+    background-color: var(--primary-blue);
     border-radius: 50%;
     padding: 15px;
     color: var(--light-color);
@@ -292,7 +317,8 @@ span#countdown-start {
     margin-inline: auto;
 }
 
-#word-output, #tap-touche {
+#word-output,
+#type-dunk {
     font-family: 'Londrina Solid', sans-serif;
     text-transform: uppercase;
     color: var(--light-color);
@@ -303,24 +329,123 @@ span#countdown-start {
     line-height: 60px;
 }
 
-div#word-count {
+#word-count {
     color: var(--light-color);
     position: absolute;
     top: 10px;
     right: 20px;
-    font-size: 16px;
+    font-size: 24px;
 }
 
-input#tap-touche {
+#word-count span {
+    color: var(--light-color);
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    padding: 5px 15px;
+}
+
+input#type-dunk {
     height: 42px;
     width: 300px;
     text-align: center;
     margin-inline: auto;
     background-color: rgb(255 255 255 / 75%);
-    color: var(--primary-orange);
+    color: var(--primary-blue);
     font-size: 42px;
 }
 
-button#play-again {
-    visibility: hidden;
+#sidebar {
+    position: relative;
 }
+
+#high-scores {
+    padding: 35px;
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    background-color: rgb(142 70 233 / 75%);
+    transition: left 0.3s ease;
+    overflow: hidden;
+}
+
+.high-scores-content {
+    color: var(--light-color);
+    line-height: 2.4;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#high-scores.open {
+    left: 0px;
+}
+
+.scores-header h3 {
+    color: var(--primary-blue);
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#toggle-sidebar {
+    position: absolute;
+    top: 45px;
+    left: 25px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 34px;
+    color: var(--light-color);
+    z-index: 1;
+    transition: left 0.3s ease;
+}
+
+#toggle-sidebar {
+    color: #61cce5;
+}
+
+#toggle-sidebar.open {
+    color: #8e46e9;
+}
+
+i#toggle-sidebar span {
+    font-size: 23px;
+    font-family: 'Orbitron', sans-serif;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: var(--light-color);
+    font-weight: 500;
+}
+
+#high-scores.open #toggle-sidebar {
+    left: 200px;
+}
+
+.high-scores-content li:first-of-type {
+    color: gold;
+    font-weight: 600;
+}
+
+.high-scores-content li:nth-of-type(2) {
+    color: rgb(223, 223, 223);
+    font-weight: 600;
+}
+
+.high-scores-content li:nth-of-type(3) {
+    color: #dfab64;
+    font-weight: 600;
+}
+
+/* For medium screens (up to 1200px) */
+@media screen and (max-width: 1536px) {
+    .score-card {
+        top: 25%;
+    }
+}
+
+/* For larger screens (greater than 1200px) */
+@media screen and (min-width: 1537px) {
+    .score-card {
+        top: 31%;
+    }
+  }

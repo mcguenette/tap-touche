@@ -1,79 +1,114 @@
 'use strict';
 
 import { onEvent, select } from './utils.js';
-import { Score } from './Score.js';
 
-const modal = select('.modal');
+// DOM elements
+const dialog = select('dialog');
 const frontModal = select('.modal-front');
 const backModal = select('.modal-back');
-const overlay = select('.overlay');
-const startBtn = select('#start-btn');
+const startButton = select('#start-btn');
 const countdownStart = select('#countdown-start');
 const guessCard = select('.guess-card');
+const buttonWrapper = select('.button-wrapper');
 const timer = select('#timer');
 const playAgain = select('#play-again');
-const wordInput = select('#tap-touche');
+const viewScores = select('#view-scores');
+const wordInput = select('#type-dunk');
 const wordCount = select('#word-count span');
 const scoreCard = select('.score-card');
 const gameDate = select('#game-date');
 const gameScore = select('#game-score');
+const toggleSidebar = select('#toggle-sidebar');
+const highScoreSidebar = select('#high-scores');
+const sidebarToggle = select('#toggle-sidebar span');
 
-//music
+// Music
 const backgroundMusic = select('#game-music');
 const correctWordSound = select('#word-sound');
 
+// Game variables
+const MAX_HIGH_SCORES = 20;
 let currentWordIndex = 0;
 let correctWordCount = 0;
 let countdownInterval;
 let timerInterval;
 let remainingSeconds;
-let usedWords = []; // could not finish this part in time, should have
-                    // completed it when creating shuffle.
+let usedWords = [];
 const words = [
-    'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
-    'population', 'weather', 'bottle', 'history', 'dream', 'character', 'money',
-    'absolute', 'discipline', 'machine', 'accurate', 'connection', 'rainbow',
-    'bicycle', 'eclipse', 'calculator', 'trouble', 'watermelon', 'developer',
-    'philosophy', 'database', 'periodic', 'capitalism', 'abominable',
-    'component', 'future', 'pasta', 'microwave', 'jungle', 'wallet', 'canada',
-    'coffee', 'beauty', 'agency', 'chocolate', 'eleven', 'technology', 'promise',
-    'alphabet', 'knowledge', 'magician', 'professor', 'triangle', 'earthquake',
-    'baseball', 'beyond', 'evolution', 'banana', 'perfume', 'computer',
-    'management', 'discovery', 'ambition', 'music', 'eagle', 'crown', 'chess',
-    'laptop', 'bedroom', 'delivery', 'enemy', 'button', 'superman', 'library',
-    'unboxing', 'bookstore', 'language', 'homework', 'fantastic', 'economy',
-    'interview', 'awesome', 'challenge', 'science', 'mystery', 'famous',
-    'league', 'memory', 'leather', 'planet', 'software', 'update', 'yellow',
-    'keyboard', 'window', 'beans', 'truck', 'sheep', 'band', 'level', 'hope',
-    'download', 'blue', 'actor', 'desk', 'watch', 'giraffe', 'brazil', 'mask',
-    'audio', 'school', 'detective', 'hero', 'progress', 'winter', 'passion',
-    'rebel', 'amber', 'jacket', 'article', 'paradox', 'social', 'resort', 'escape'
-];
+  'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
+  'population', 'weather', 'bottle', 'history', 'dream', 'character', 'money',
+  'absolute', 'discipline', 'machine', 'accurate', 'connection', 'rainbow',
+  'bicycle', 'eclipse', 'calculator', 'trouble', 'watermelon', 'developer',
+  'philosophy', 'database', 'periodic', 'capitalism', 'abominable',
+  'component', 'future', 'pasta', 'microwave', 'jungle', 'wallet', 'canada',
+  'coffee', 'beauty', 'agency', 'chocolate', 'eleven', 'technology', 'promise',
+  'alphabet', 'knowledge', 'magician', 'professor', 'triangle', 'earthquake',
+  'baseball', 'beyond', 'evolution', 'banana', 'perfume', 'computer',
+  'management', 'discovery', 'ambition', 'music', 'eagle', 'crown', 'chess',
+  'laptop', 'bedroom', 'delivery', 'enemy', 'button', 'superman', 'library',
+  'unboxing', 'bookstore', 'language', 'homework', 'fantastic', 'economy',
+  'interview', 'awesome', 'challenge', 'science', 'mystery', 'famous',
+  'league', 'memory', 'leather', 'planet', 'software', 'update', 'yellow',
+  'keyboard', 'window', 'beans', 'truck', 'sheep', 'band', 'level', 'hope',
+  'download', 'blue', 'actor', 'desk', 'watch', 'giraffe', 'brazil', 'mask',
+  'audio', 'school', 'detective', 'hero', 'progress', 'winter', 'passion',
+  'rebel', 'amber', 'jacket', 'article', 'paradox', 'social', 'resort', 'escape'
+ ];
 
-// Modal Functions
-function showDefaultModal() {
-  showFrontModal();
+// High score functions
+function generateHighScore(hits, percentage, date) {
+  return { hits, percentage, date };
 }
 
-function showFrontModal() {
-  frontModal.classList.remove('hidden');
-  backModal.classList.add('hidden');
-  overlay.classList.remove('hidden');
-  modal.style.display = 'flex';
+function getHighScores() {
+  const highScoresJSON = localStorage.getItem('highScores');
+  console.log(highScoresJSON);
+  return highScoresJSON ? JSON.parse(highScoresJSON) : [];
 }
 
-function showBackModal() {
+function saveHighScores(highScores, score) {
+  highScores.push(score);
+  highScores.sort((a, b) => b.hits - a.hits);
+  highScores.splice(MAX_HIGH_SCORES);
+  localStorage.setItem('highScores', JSON.stringify(highScores));
+}
+
+
+function displayHighScores() {
+  const highScoresDiv = select('#high-scores ul');
+  const highScores = getHighScores();
+  highScoresDiv.innerHTML = '';
+
+  const filteredScores = highScores.filter(score => score.hits > 0);
+
+  if (filteredScores.length > 0) {
+    const topScores = filteredScores
+      .sort((a, b) => b.hits - a.hits)
+      .slice(0, 10);
+
+    for (let i = 0; i < topScores.length; i++) {
+      const score = topScores[i];
+      const listItem = document.createElement('li');
+      listItem.textContent = `${formatDate(score.date)}: ${score.hits} hits (${score.percentage.toFixed(2)}%)`;
+      highScoresDiv.appendChild(listItem);
+    }
+  } else {
+    const noScoresMessage = document.createElement('li');
+    noScoresMessage.textContent = 'No games played';
+    highScoresDiv.appendChild(noScoresMessage);
+  }
+
+  const highScoreSidebar = select('#high-scores');
+  highScoreSidebar.style.display = highScoreSidebar.classList.contains('open') ? 'block' : 'none';
+}
+
+
+
+// Modal functions
+function showBackDialog() {
   frontModal.classList.add('hidden');
   backModal.classList.remove('hidden');
-  modal.style.display = 'flex';
   startModalCountdown();
-}
-
-function closeModal() {
-  frontModal.classList.add('hidden');
-  backModal.classList.add('hidden');
-  overlay.classList.add('hidden');
-  modal.style.display = 'none';
 }
 
 function startModalCountdown() {
@@ -89,13 +124,13 @@ function startModalCountdown() {
       countdownStart.textContent = 'GO!';
     } else {
       clearInterval(countdownInterval);
-      closeModal();
+      dialog.close();
       startGame();
     }
   }, 1000);
 }
 
-// Timer Functions
+// Timer functions
 function updateTimer() {
   remainingSeconds--;
 
@@ -103,31 +138,40 @@ function updateTimer() {
     timer.textContent = remainingSeconds;
 
     if (remainingSeconds <= 10) {
-      timer.style.backgroundColor = '#db2806';
+      timer.style.backgroundColor = 'rgb(255 60 91)';
     }
   } else {
+    timer.style.backgroundColor = '#61cce5';
     clearInterval(timerInterval);
-    showPlayAgain();
     endGame();
   }
 }
 
 function startGameTimer() {
-  remainingSeconds = 99; 
+  remainingSeconds = 20;
   timer.textContent = remainingSeconds;
-  backgroundMusic.play();
+  wordInput.focus();
+  if (backgroundMusic.paused) {
+    backgroundMusic.currentTime = 0;
+    backgroundMusic.volume = 0.4;
+    backgroundMusic.play();
+  }
   timerInterval = setInterval(updateTimer, 1000);
 }
 
-// Game Functions
+// Game functions
 function startGame() {
   currentWordIndex = 0;
   correctWordCount = 0;
   wordCount.textContent = correctWordCount;
-  playAgain.style.visibility = 'hidden';
+  playAgain.innerHTML = '<i class="fa-solid fa-rotate-left"></i> Reset';
+  buttonWrapper.style.justifyContent = 'center';
+  viewScores.style.display = 'none';
   scoreCard.style.display = 'none';
   wordInput.removeAttribute('disabled');
+  wordInput.focus();
 
+  clearInterval(timerInterval);
   displayCurrentWord();
   displayInput();
   startGameTimer();
@@ -141,88 +185,150 @@ function displayCurrentWord() {
 }
 
 function shuffleArray(array) {
-  let currentIndex = array.length,
-    randomIndex;
+  let currentIndex = array.length, randomIndex;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
   return array;
 }
 
-function showPlayAgain() {
-  playAgain.style.visibility = 'visible';
-  wordInput.value = '';
-}
-
 function displayInput() {
   guessCard.style.display = 'flex';
-  guessCard.style.backgroundColor = 'rgb(240 80 51 / 80%)';
+  guessCard.style.backgroundColor = 'rgb(143 70 233 / 80%)';
+  wordInput.focus();
 }
 
 function checkUserInput() {
-    const userInput = wordInput.value.toLowerCase().trim();
-    const currentWord = words[currentWordIndex].toLowerCase();
-  
-    if (userInput === currentWord) {
-      correctWordCount++;
-      correctWordSound.play();
-      if (currentWordIndex < words.length - 1) {
-        currentWordIndex++;
-      } else {
-        endGame();
-        return;
-      }
-  
-      displayCurrentWord();
-  
-      wordInput.value = '';
-      wordCount.textContent = correctWordCount;
+  const userInput = wordInput.value.toLowerCase().trim();
+  const currentWord = words[currentWordIndex].toLowerCase();
+
+  if (userInput === currentWord) {
+    correctWordCount++;
+    correctWordSound.play();
+    if (currentWordIndex < words.length - 1) {
+      currentWordIndex++;
+    } else {
+      endGame();
+      return;
     }
+
+    displayCurrentWord();
+
+    wordInput.value = '';
+    wordCount.textContent = correctWordCount;
   }
-  
+}
 
 function endGame() {
   clearInterval(countdownInterval);
   backgroundMusic.pause();
-
+  playAgain.innerHTML = ' <i class="fa-solid fa-rotate-left"></i> Play again';
+  viewScores.style.display = 'inline-block';
+  wordInput.value = '';
   const hits = correctWordCount;
   const percentage = (hits / words.length) * 100;
+  timer.style.backgroundColor = 'rgb(255 60 91)';
+  if (hits > 0) {
+    const score = generateHighScore(hits, percentage, new Date());
 
-  const score = new Score(new Date(), hits, percentage);
-  wordInput.setAttribute('disabled', true);
-  showEndGame(score);
+    const highScores = getHighScores();
+    highScores.push(score);
+    highScores.sort((a, b) => a.percentage - b.percentage);
+    saveHighScores(highScores);
+    wordInput.setAttribute('disabled', true);
+    showEndGame(score);
+  } else {
+    showEndGame();
+  }
 }
 
 function showEndGame(score) {
   scoreCard.classList.remove('hidden');
   guessCard.classList.add('hidden');
   scoreCard.style.display = 'flex';
+  buttonWrapper.style.justifyContent = 'space-between';
   gameDate.textContent = formatDate(score.date);
   gameScore.textContent = `${score.hits} hits (${score.percentage.toFixed(2)}%)`;
 }
 
 function formatDate(date) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
   return date.toLocaleDateString(undefined, options);
 }
 
-// Event Listeners
-onEvent('keydown', document, function (e) {
-  if (e.key === 'Escape' && !frontModal.classList.contains('hidden')) {
-    closeModal();
+// Sidebar toggle
+toggleSidebar.addEventListener('click', () => {
+  highScoreSidebar.classList.toggle('open');
+  updateToggle();
+});
+
+function updateToggle() {
+  const sidebarIsOpen = highScoreSidebar.classList.contains('open');
+  toggleSidebar.style.left = sidebarIsOpen ? '290px' : '25px';
+  toggleSidebar.classList.toggle('fa-circle-chevron-right', !sidebarIsOpen);
+  toggleSidebar.classList.toggle('fa-circle-chevron-left', sidebarIsOpen);
+  toggleSidebar.style.color = sidebarIsOpen ? '#61cce5' : '#61cce5';
+  sidebarToggle.style.display = sidebarIsOpen ? 'none' : 'inline';
+  
+  displayHighScores();
+}
+
+
+function openSideBar() {
+  highScoreSidebar.classList.add('open');
+  updateToggle();
+}
+
+function closeSideBar() {
+  highScoreSidebar.classList.remove('open');
+  updateToggle();
+}
+
+
+
+// Event listeners
+
+// Added new one to handle clicking reset or play again
+onEvent('click', playAgain, () => {
+  clearInterval(countdownInterval);
+  clearInterval(timerInterval);
+
+  countdownStart.textContent = '';
+  timer.textContent = '';
+  timer.style.backgroundColor = '';
+
+
+  frontModal.classList.add('hidden');
+  backModal.classList.remove('hidden');
+  scoreCard.classList.add('hidden');
+  guessCard.classList.add('hidden');
+
+  dialog.showModal();
+  startModalCountdown();
+  closeSideBar();
+});
+
+
+onEvent('click', document, () => wordInput.focus());
+onEvent('click', startButton, showBackDialog);
+onEvent('click', viewScores, () => {
+  const sidebarIsOpen = highScoreSidebar.classList.contains('open');
+  if (sidebarIsOpen) {
+    closeSideBar();
+  } else {
+    openSideBar();
   }
 });
 
-onEvent('click', overlay, closeModal);
-onEvent('click', startBtn, showBackModal);
-onEvent('click', playAgain, startGame);
 onEvent('input', wordInput, checkUserInput);
 
 // Load modal right away
-setTimeout(showDefaultModal, 100);
+setTimeout(() => dialog.showModal(), 100);
+displayHighScores();
