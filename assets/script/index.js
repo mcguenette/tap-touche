@@ -66,10 +66,11 @@ function getHighScores() {
   return highScoresJSON ? JSON.parse(highScoresJSON) : [];
 }
 
-function saveHighScores(highScores) {
-  highScores.sort((a, b) => a.hits - b.hits);
-  const topScores = highScores.slice(0, MAX_HIGH_SCORES);
-  localStorage.setItem('highScores', JSON.stringify(topScores));
+function saveHighScores(highScores, score) {
+  highScores.push(score);
+  highScores.sort((a, b) => b.hits - a.hits);
+  highScores.splice(MAX_HIGH_SCORES);
+  localStorage.setItem('highScores', JSON.stringify(highScores));
 }
 
 
@@ -92,7 +93,6 @@ function displayHighScores() {
       highScoresDiv.appendChild(listItem);
     }
   } else {
-    // Add a message for no scores if the array is empty
     const noScoresMessage = document.createElement('li');
     noScoresMessage.textContent = 'No games played';
     highScoresDiv.appendChild(noScoresMessage);
@@ -153,6 +153,7 @@ function startGameTimer() {
   wordInput.focus();
   if (backgroundMusic.paused) {
     backgroundMusic.currentTime = 0;
+    backgroundMusic.volume = 0.4;
     backgroundMusic.play();
   }
   timerInterval = setInterval(updateTimer, 1000);
@@ -243,8 +244,6 @@ function endGame() {
     showEndGame();
   }
 }
-
-
 
 function showEndGame(score) {
   scoreCard.classList.remove('hidden');
